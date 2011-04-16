@@ -6,12 +6,9 @@ require 'haml'
 use Rack::Flash
 enable :sessions
 
+set :password, ENV['password'] || 'secret'
+set :username, ENV['username'] || 'secret'
 set :token,'maketh1$longandh@rdtoremembeavecdesmotsenfrancaisr'
-
-configure :development do
-  set :username,'toto'
-  set :password,'tata'
-end
 
 configure :production do
   require 'newrelic_rpm'
