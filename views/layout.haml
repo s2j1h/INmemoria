@@ -6,7 +6,8 @@
   %body
     %a(href='/admin')Admin
     -if admin?
-      %a(href='/logout')Logout
+      %a(href='/add')Ajouter
+      %a(href='/logout')Se déconnecters
     -else
       %a(href='/login')Login
     = yield
