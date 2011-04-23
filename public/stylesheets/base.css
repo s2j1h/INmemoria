@@ -1,0 +1,145 @@
+/* --- STYLES DE BASE --- */ 
+ 
+/* Page */ 
+html { 
+  font-size: 100%; /* Évite un bug d'IE 6-7. (1) */ 
+} 
+body { 
+  margin: 0; 
+  padding: 0; /* Remettre à zéro si nécessaire. */ 
+  /* Pensez à utiliser une collection de polices (2), par ex: */
+  font-family: 'Ubuntu',Arial, Helvetica, FreeSans, sans-serif;
+  font-size: .8em; /* À adapter pour la police choisie. (3) */ 
+  line-height: 1.4; /* À adapter au design. (4) */ 
+  color: black; 
+  background: white; 
+} 
+ 
+/* Titres */ 
+h1, h2, h3, h4, h5, h6 { 
+  margin: 1em 0 .5em 0; /* Rapproche le titre du texte. (5) */ 
+  line-height: 1.2; 
+  font-weight: bold; /* Valeur par défaut. (6) */ 
+  font-style: normal; 
+} 
+h1 { 
+  font-size: 1.75em; 
+} 
+
+h1 a,h1 a:link,h1 a:visited, h1 a:hover,h1 a:focus {
+  text-decoration:none;
+  border: 0;
+}
+
+h2 a {
+  font-size: 0.6em;
+  font-weight: normal; 
+}
+
+h2 { 
+  font-size: 1.6em; 
+} 
+h3 { 
+  font-size: 1.25em; 
+} 
+h4 { 
+  font-size: 1em; 
+} 
+ 
+/* Listes */ 
+ul, ol { 
+  margin: .75em 0 .75em 32px; 
+  padding: 0; 
+} 
+ 
+/* Paragraphes */ 
+p { 
+  margin: .75em 0; /* Marges plus faibles que par défaut. (7) */ 
+} 
+ 
+/* Liens */ 
+h2 a:link,p a:link {
+	color:#18b1c3;
+	text-decoration:none;
+	border-bottom:1px dotted #18b1c3;
+	}	
+h2 a:visited,p a:visited {
+	color:#18b1c3;
+	border-bottom:none;
+	text-decoration:none;
+	}		
+h2 a:hover,p a:hover,
+h2 a:focus,p a:focus {
+	color:#fff;
+	background-color: #18b1c3;
+  border:1px dotted #18b1c3;
+	text-decoration:none;
+	}
+
+ 
+/* Pas de bordure autour des images dans les liens */ 
+p a img { 
+  border: none; 
+} 
+ 
+/* Divers éléments de type en-ligne (8) */ 
+em { 
+  font-style: italic; 
+} 
+strong { 
+  font-weight: bold; 
+} 
+
+/* header */
+
+#header {
+	height: 30px;
+	margin: 0 auto;
+	padding: 0px 0 15px 0;
+	background: #532408;
+	border-bottom: 10px solid #aef2f7;
+	font-family: 'Ubuntu',Arial, Helvetica, sans-serif;
+}
+
+#header h1 {
+  font-family: 'Ubuntu';
+	margin: 0 auto;
+  width:800px;
+	line-height: normal;
+	font-size: 40px;
+	color: #FFFFFF;
+}
+
+#header a {
+	color: #FFFFFF;
+}
+
+/* Footer */
+
+#footer {
+	height: 15px;
+	padding: 0px 0 15px 0;
+	background: #532408;
+	border-top: 5px solid #aef2f7;
+	font-family: 'Ubuntu',Arial, Helvetica, sans-serif;
+}
+
+#footer p {
+	margin: 0;
+	padding-top: 10px;
+	line-height: normal;
+	font-size: 9px;
+	text-transform: uppercase;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+#footer a {
+	color: #FFFFFF;
+}
+
+#content {
+  margin: 0 auto;
+  padding-bottom: 50px;
+  width:700px;
+}

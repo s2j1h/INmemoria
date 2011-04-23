@@ -1,10 +1,19 @@
+%h2 Administration
+
 -if flash[:error]
   =flash[:error]
 
-%form(action="/login" method="post")
-  %label(for="username")Username:
-  %input#username(type="text" name="username")
-  %label(for="password")Password:
-  %input#password(type="password" name="password")
-  %input(type="submit" value="Login") or <a href="/">Cancel</a>
+%form{:action=>"/login",:method=>"post", :id => "contactform", :class => "rounded" }
+  .field
+    %label(for="username")Nom:
+    %input{:type=>"text",:name=>"username",:id=>"username", :class=>"input"}
+    %p{:class=>"hint"}Entrez votre nom
+
+  .field
+    %label(for="password")Mot de passe:
+    %input{:type=>"password",:name=>"password",:id=>"password", :class=>"input"}
+    %p{:class=>"hint"}Entrez votre mot de passe
+
+
+  %input{:type=>"submit",:value=>"Ajouter", :class => "button"}
 

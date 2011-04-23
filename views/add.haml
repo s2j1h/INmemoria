@@ -3,7 +3,36 @@
 -if flash[:error]
   =flash[:error]
 
-%form{:action=>"/add",:method=>"post",:enctype=>"multipart/form-data"}
-  %input{:type=>"file",:name=>"image"}
-  %input{:type=>"submit",:value=>"Ajouter"}
+%form{:action=>"/add",:method=>"post",:enctype=>"multipart/form-data", :id => "contactform", :class => "rounded" }
+
+  .field
+    %label(for="nom")Nom:
+    %input{:type=>"text",:name=>"nom",:id=>"nom", :class=>"input"}
+    %p{:class=>"hint"}Entrez le nom de l'animal
+
+  
+  .field
+    %label(for="image")Image:
+    %input{:type=>"file",:id=>"image", :name=>"image", :class=>"input"}
+    %p{:class=>"hint"}Choisissez une image
+
+  .field
+    %label(for="dateNaissance")Né en:
+    %input{:type=>"text",:id=>"dateNaissance",:name=>"dateNaissance", :class=>"input"}
+    %p{:class=>"hint"}Entrez l'année de naissance de l'animal
+
+  .field
+    %label(for="dateDeces")Décédé en:
+    %input{:type=>"text",:id=>"dateDeces",:name=>"dateDeces", :class=>"input"}
+    %p{:class=>"hint"}Entrez l'année de décès de l'animal
+
+  .field
+    %label(for="commentaire")Commentaire:
+    %textarea{:id=>"commentaire",:name=>"commentaire", :class=>"input textarea"}
+    %p{:class=>"hint"}Entrez les commentaires laissés par son ou ses maîtres
+
+
+
+  %input{:type=>"submit",:value=>"Ajouter", :class => "button"}
+
 
