@@ -2,9 +2,21 @@
   Administration inmemoria
   %a(href='/add')Ajouter un hommage
 
+-if flash[:notice]
+  #flash_notice
+    %p= flash[:notice]
+
 - unless @hommages.empty?
-  les hommages
-  - @hommages.each do |hommage|
-    = hommage.nom
-
-
+  #wrap
+    - col = "left"
+    - @hommages.each do |hommage|
+      .column{:id => "#{col}"}
+        %img{:src => hommage.urlImageTresReduite, :class=>"img-box" }/
+        %p 
+          %a(href='/edit')
+            = hommage.nom
+        - if col == "left"
+          - col = "right"
+        - else
+          - col = "left"
+  #clearMe

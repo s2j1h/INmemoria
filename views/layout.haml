@@ -12,21 +12,21 @@
     #header
       %h1
         %a(href='/admin')INmemoria
+
+     
     
     #content
+      -if admin?
+        #wrapNav
+          #nav
+            %a{:href => '/logout', :class => 'awesome'}Se déconnecter
+        #clearMe
       = yield
 
-    %a(href='/admin')Admin
-    -if admin?
-      %a(href='/add')Ajouter
-      %a(href='/logout')Se déconnecter
-    -else
-      %a(href='/login')Login
-
+   
     #footer
       %p
         Inmemoria est forgé par 
         %a(href='http://labs.zeneffy.fr')Zeneffy Labs.
         Copyright &copy;2011 J.Raigneau. All rights reserved.
-
 

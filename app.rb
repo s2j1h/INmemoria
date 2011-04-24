@@ -27,17 +27,19 @@ end
 
 class Hommage
   include DataMapper::Resource  
-  property :id,               Serial
-  property :nom,              String
-  property :dateNaissance,    String
-  property :dateDeces,        String
-  property :commentaires,     String
-  property :urlImagePleine,   String
-  property :urlImageReduite,  String
-  property :urlImageEdit,     String
+  property :id,                   Serial
+  property :nom,                  String, :required => true
+  property :dateNaissance,        String
+  property :dateDeces,            String, :required => true
+  property :commentaires,         Text
+  property :urlImagePleine,       Text, :required => true
+  property :urlImageReduite,      Text, :required => true
+  property :urlImageTresReduite,  Text, :required => true
+  property :urlImageEdit,         Text, :required => true
 end
 
 DataMapper.auto_upgrade!
+#DataMapper::Model.raise_on_save_failure = true #permet de savoir si tout est bien sauvegardé, à utiliser avec rescue
 
 helpers do
   def admin? ; request.cookies[settings.username] == settings.token ; end
@@ -112,6 +114,7 @@ post '/add' do
   response = client.post_file('http://picasaweb.google.com/data/feed/api/user/default/albumid/default', test_image, mime_type).to_xml
     
   urlImagePleine = response.elements["media:group"].elements["media:content"].attributes['url']
+  urlImageTresReduite = response.elements["media:group"].elements["media:thumbnail[@width='144']"].attributes['url']
   urlImageReduite = response.elements["media:group"].elements["media:thumbnail[@width='288']"].attributes['url']
   urlImageEdit = response.elements["link[@rel='edit']"].attributes['href']
   #client.delete(edit_uri)
@@ -123,17 +126,23 @@ post '/add' do
   dateNaissance =  params[:dateNaissance] 
   commentaires = params[:commentaire]
 
-  Hommage.create(
+  hommage = Hommage.create(
     :nom => nom, 
     :dateNaissance => dateNaissance, 
     :dateDeces => dateDeces, 
     :commentaires => commentaires, 
     :urlImagePleine => urlImagePleine, 
-    :urlImageReduite => urlImageReduite, 
+    :urlImageReduite => urlImageReduite,
+    :urlImageTresReduite => urlImageTresReduite,
     :urlImageEdit => urlImageEdit
   )
-  redirect '/admin', :notice => "nouvelle entrée créée"
-  
+  if hommage.save
+     redirect '/admin', :notice => "Une nouvelle entrée a été créée"
+  else
+    puts hommage.errors.inspect
+    redirect '/admin', :error => "Une erreur a empéché la sauvegarde de l'hommage - merci de contacter votre admin préféré"
+  end
+   
 end
 
 
