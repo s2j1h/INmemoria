@@ -1,4 +1,4 @@
-db/*.sqlite3.db
+*.db
 log
 tmp
 .DS_Store

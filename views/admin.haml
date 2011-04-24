@@ -2,3 +2,9 @@
   Administration inmemoria
   %a(href='/add')Ajouter un hommage
 
+- unless @hommages.empty?
+  les hommages
+  - @hommages.each do |hommage|
+    = hommage.nom
+
+

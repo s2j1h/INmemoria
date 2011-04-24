@@ -1,7 +1,11 @@
 %h2 Administration
 
 -if flash[:error]
-  =flash[:error]
+  #flash_error
+    %p= flash[:error]
+-if flash[:notice]
+  #flash_notice
+    %p= flash[:notice]
 
 %form{:action=>"/login",:method=>"post", :id => "contactform", :class => "rounded" }
   .field

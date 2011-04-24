@@ -3,8 +3,10 @@ require 'sinatra'
 require 'rack-flash'
 require 'haml'
 require 'gdata'
+require 'sinatra/redirect_with_flash'
+require 'data_mapper'
 
-use Rack::Flash
+use Rack::Flash, :sweep => true
 enable :sessions
 
 set :password, ENV['password'] || 'secret'
@@ -13,9 +15,29 @@ set :picasa_password, ENV['picasa_password']
 set :picasa_username, ENV['picasa_username']
 set :token,'maketh1$longandh@rdtoremembeavecdesmotsenfrancaisr'
 
+configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+end
+
 configure :production do
   require 'newrelic_rpm'
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
+
+
+class Hommage
+  include DataMapper::Resource  
+  property :id,               Serial
+  property :nom,              String
+  property :dateNaissance,    String
+  property :dateDeces,        String
+  property :commentaires,     String
+  property :urlImagePleine,   String
+  property :urlImageReduite,  String
+  property :urlImageEdit,     String
+end
+
+DataMapper.auto_upgrade!
 
 helpers do
   def admin? ; request.cookies[settings.username] == settings.token ; end
@@ -29,7 +51,6 @@ def picasa_client
   client
 end
 
-
 get '/' do
   haml :index, :layout => false
 end
@@ -37,6 +58,7 @@ end
 # Admin pages with list 
 get '/admin' do
   protected!
+  @hommages = Hommage.all
   haml :admin
 end
 
@@ -51,15 +73,15 @@ post '/login' do
     response.set_cookie(settings.username,:value => settings.token,:expires => Time.new + 3600) 
     redirect '/admin'
   else
-    flash['error'] = "Login ou mot de passe incorrects"
-    redirect '/login'
+    flash[:error] = "Login ou mot de passe incorrect"
+    redirect '/login', :error => "Login ou mot de passe incorrect"
   end
 end
 
 get '/logout' do
   response.set_cookie(settings.username, false)
-  flash['info'] = "Vous êtes déconnecté"
-  redirect '/login'
+  flash[:notice] = "Vous êtes déconnecté"
+  haml :login
 end
 
 get '/add' do
@@ -69,11 +91,17 @@ end
 
 post '/add' do
   protected!
-  unless params[:image] && (tmpfile = params[:image][:tempfile]) && (name = params[:image][:filename])
-    flash['error'] = "Merci de remplir l'ensemble des informations obligatoires" 
-    redirect '/add'
+  if params[:nom] == "" || params[:dateDeces] == ""
+    redirect '/add', :error =>  "Merci de remplir l'ensemble des informations obligatoires" 
   end
-  file = Tempfile.new(['hello', '.jpg'])
+
+  unless params[:image] && params[:image][:tempfile] && params[:image][:filename]
+    redirect '/add', :error =>  "Merci de remplir l'ensemble des informations obligatoires" 
+  end
+  tmpfile = params[:image][:tempfile]
+  filename = params[:image][:filename]
+
+  file = Tempfile.new([filename, '.jpg'])
   while blk = tmpfile.read(65536)
     file.write(blk)
   end
@@ -83,16 +111,30 @@ post '/add' do
     
   response = client.post_file('http://picasaweb.google.com/data/feed/api/user/default/albumid/default', test_image, mime_type).to_xml
     
-  puts response.elements["media:group"].elements["media:content"].attributes['url']
-  puts response.elements["media:group"].elements["media:thumbnail[@width='288']"].attributes['url']
+  urlImagePleine = response.elements["media:group"].elements["media:content"].attributes['url']
+  urlImageReduite = response.elements["media:group"].elements["media:thumbnail[@width='288']"].attributes['url']
+  urlImageEdit = response.elements["link[@rel='edit']"].attributes['href']
+  #client.delete(edit_uri)
   tmpfile.close
   tmpfile.unlink
-  edit_uri = response.elements["link[@rel='edit']"].attributes['href']
-  #client.delete(edit_uri)
 
+  nom = params[:nom]
+  dateDeces = params[:dateDeces] 
+  dateNaissance =  params[:dateNaissance] 
+  commentaires = params[:commentaire]
 
-  flash['info'] = "nouvelle entrée créée"
-  redirect '/admin'
+  Hommage.create(
+    :nom => nom, 
+    :dateNaissance => dateNaissance, 
+    :dateDeces => dateDeces, 
+    :commentaires => commentaires, 
+    :urlImagePleine => urlImagePleine, 
+    :urlImageReduite => urlImageReduite, 
+    :urlImageEdit => urlImageEdit
+  )
+  redirect '/admin', :notice => "nouvelle entrée créée"
   
 end
+
+
 

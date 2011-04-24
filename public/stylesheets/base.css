@@ -143,3 +143,24 @@ strong {
   padding-bottom: 50px;
   width:700px;
 }
+
+#flash_notice, #flash_error {
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 165px;
+  margin-top: 0px;
+  padding-left: 15px;
+  font-size:1.2em;
+}
+
+#flash_notice {
+  background-color: #aef2f7;
+  border: 2px solid  #009999;
+}
+
+#flash_error  {
+  background-color: #FF7373;
+  border: 2px solid #A60000;
+}
+
+
