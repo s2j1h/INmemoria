@@ -14,5 +14,5 @@ common: &default_settings
  
 production:
   <<: *default_settings
-  monitor_mode: false
+  monitor_mode: true
 

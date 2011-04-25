@@ -20,7 +20,7 @@ configure :development do
 end
 
 configure :production do
-  #require 'newrelic_rpm'
+  require 'newrelic_rpm'
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
@@ -39,7 +39,7 @@ class Hommage
 end
 
 DataMapper.auto_upgrade!
-DataMapper::Model.raise_on_save_failure = true #permet de savoir si tout est bien sauvegardé, à utiliser avec rescue
+DataMapper::Model.raise_on_save_failure = false #permet de savoir si tout est bien sauvegardé, à utiliser avec rescue
 
 helpers do
   def admin? ; request.cookies[settings.username] == settings.token ; end
