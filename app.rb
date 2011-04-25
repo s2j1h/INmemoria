@@ -38,7 +38,7 @@ class Hommage
   property :urlImageEdit,         Text
 end
 
-DataMapper.auto_upgrade!
+DataMapper.auto_migrate!
 DataMapper::Model.raise_on_save_failure = false #permet de savoir si tout est bien sauvegardé, à utiliser avec rescue
 
 helpers do
