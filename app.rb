@@ -20,7 +20,7 @@ configure :development do
 end
 
 configure :production do
-  require 'newrelic_rpm'
+  #require 'newrelic_rpm'
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
