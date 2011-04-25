@@ -11,8 +11,8 @@ enable :sessions
 
 set :password, ENV['password'] || 'secret'
 set :username, ENV['username'] || 'secret'
-set :picasa_password, ENV['picasa_password'] 
-set :picasa_username, ENV['picasa_username']
+set :picasa_username, ENV['picasa_username'] # in dev mode: export picasa_username=xxx
+set :picasa_password, ENV['picasa_password'] # in dev mode: export picasa_password=xxx
 set :token,'maketh1$longandh@rdtoremembeavecdesmotsenfrancaisr'
 
 configure :development do
@@ -38,7 +38,8 @@ class Hommage
   property :urlImageEdit,         Text
 end
 
-DataMapper.auto_migrate!
+DataMapper.auto_upgrade!
+#DataMapper.auto_migrate! #si changement de schéma à faire apparaître en production
 DataMapper::Model.raise_on_save_failure = false #permet de savoir si tout est bien sauvegardé, à utiliser avec rescue
 
 helpers do
