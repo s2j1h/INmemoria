@@ -5,6 +5,7 @@ require 'haml'
 require 'gdata'
 require 'sinatra/redirect_with_flash'
 require 'data_mapper'
+require "ftools"
 
 use Rack::Flash, :sweep => true
 enable :sessions
@@ -105,11 +106,16 @@ post '/admin/add' do
   filename = params[:image][:filename]
 
   file = Tempfile.new([filename, '.jpg'])
-  while blk = tmpfile.read(65536)
-    file.write(blk)
-  end
+  #tmpfile.rewind
+  #file.write(tmpfile.read)
+
+  File.copy(tmpfile.path,file.path)
+
+  #while blk = tmpfile.read(65536)
+  #  file.write(blk)
+  #end
   client = picasa_client
-  test_image = file.path
+  test_image = tmpfile.path
   mime_type = 'image/jpeg'
     
   response = client.post_file('http://picasaweb.google.com/data/feed/api/user/default/albumid/default', test_image, mime_type).to_xml
@@ -201,7 +207,6 @@ post '/admin/edit/:id' do
   tmpfile.close
   tmpfile.unlink
 
-  puts "UPDATE en cours"
   if hommage.update(
     :nom => nom, 
     :dateNaissance => dateNaissance, 
