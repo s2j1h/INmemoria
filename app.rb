@@ -200,7 +200,7 @@ post '/admin/edit/:id' do
   tmpfile.close
   tmpfile.unlink
 
-
+  puts "UPDATE en cours"
   if hommage.update(
     :nom => nom, 
     :dateNaissance => dateNaissance, 

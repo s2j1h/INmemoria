@@ -76,8 +76,8 @@ PLATFORMS
 
 DEPENDENCIES
   data_mapper (= 1.1.0)
-  dm-postgres-adapter
-  dm-sqlite-adapter
+  dm-postgres-adapter (= 1.1.0)
+  dm-sqlite-adapter (= 1.1.0)
   gdata (= 1.1.2)
   haml (= 3.0.25)
   newrelic_rpm (= 2.14.1)

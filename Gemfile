@@ -8,11 +8,11 @@ gem 'data_mapper', '1.1.0'
 
 
 group :production do
-  gem 'dm-postgres-adapter'
+  gem 'dm-postgres-adapter', '1.1.0'
   gem 'newrelic_rpm', '2.14.1'
 end
 
 group :development do
-  gem 'dm-sqlite-adapter'
+  gem 'dm-sqlite-adapter', '1.1.0'
 end
 
