@@ -58,7 +58,7 @@ p {
 } 
  
 /* Liens */ 
-h2 a:link,p a:link {
+ h2 a:link,p a:link {
 	color:#18b1c3;
 	text-decoration:none;
 	border-bottom:1px dotted #18b1c3;
@@ -148,7 +148,7 @@ strong {
 #flash_notice, #flash_error {
   margin-bottom: 5px;
   margin-left: 5px;
-  margin-right: 165px;
+  margin-right: 100px;
   margin-top: 0px;
   padding-left: 15px;
   font-size:1.2em;
@@ -165,34 +165,17 @@ strong {
 }
 
 #wrap, #wrapNav {
-  width:500px;
-  margin-left:50px 
-  margin-right: auto;
+  width:700px;
+  margin:0 auto;
   background:#fff;
+  position: relative;
 }
 
 #wrapNav {
   margin: 0 auto;
-  width:700px;
+  width:600px;
   padding-top: 5px;
   background:#fff;
-
-}
-
-#clearMe {
-  clear: both;
-}
-
-#left {
-  float:left;
-  width:250px;
-  margin-bottom: 20px;
-}
-
-#right {
-  float:right;
-  width: 250px;
-  margin-bottom: 20px;
 
 }
 
@@ -200,6 +183,14 @@ strong {
   border:6px solid #f4f4f4;
   display: block; 
   margin-left: auto;   margin-right: auto;
+}
+
+.column {
+  width:200px;
+  margin: 0 0 20px 0;
+  padding: 0;
+  position: relative;
+  display: inline-block;
 }
 
 .column p {
@@ -211,7 +202,6 @@ strong {
 #nav {
   float: right;
 }
-
 
 
 /*

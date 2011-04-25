@@ -1,0 +1,46 @@
+%h2 
+  Editer un hommage
+  %a{:href => "/admin/delete/#{@hommage.id}", :onclick => "return confirm('Etes vous sûr - toutes les données seront perdues !');"}Supprimer
+
+
+-if flash[:error]
+  #flash_error
+    %p= flash[:error]
+
+%form{:action=>"/admin/edit/#{@hommage.id}",:method=>"post",:enctype=>"multipart/form-data", :id => "contactform", :class => "rounded" }
+
+  .field
+    %label(for="nom")Nom*:
+    %input{:type=>"text",:name=>"nom",:id=>"nom", :class=>"input", :value => @hommage.nom}
+    %p{:class=>"hint"}Entrez le nom de l'animal
+
+  
+  .field
+    %label(for="image")Image*:
+    %input{:type=>"file",:id=>"image", :name=>"image", :class=>"input"}
+    %p{:class=>"hint"}Choisissez une image
+    %img{:src => @hommage.urlImageTresReduite, :class=>"img-box" }/
+
+
+  .field
+    %label(for="dateNaissance")Né en:
+    %input{:type=>"text",:id=>"dateNaissance",:name=>"dateNaissance", :class=>"input", :value => @hommage.dateNaissance}
+    %p{:class=>"hint"}Entrez l'année de naissance de l'animal
+
+  .field
+    %label(for="dateDeces")Décédé en*:
+    %input{:type=>"text",:id=>"dateDeces",:name=>"dateDeces", :class=>"input", :value => @hommage.dateDeces}
+    %p{:class=>"hint"}Entrez l'année de décès de l'animal
+
+  .field
+    %label(for="commentaire")Commentaire:
+    %textarea{:id=>"commentaire",:name=>"commentaire", :class=>"input textarea"}
+      = @hommage.commentaires
+    %p{:class=>"hint"}Entrez les commentaires laissés par son ou ses maîtres
+
+
+
+  %input{:type=>"submit",:value=>"Editer", :class => "awesome button"}
+
+
+
