@@ -1,6 +1,6 @@
 h1. INmemoria
 
-INmemoria est une application lié au site "Dignami":http://www.dignami.com pour afficher la rubrique "en mémoire d'eux".
+INmemoria est une application liée au site "Dignami":http://www.dignami.com pour afficher la rubrique "en mémoire d'eux".
 
 http://labs.zeneffy.fr/projets/INmemoria
 

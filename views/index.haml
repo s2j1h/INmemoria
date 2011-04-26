@@ -1,1 +1,19 @@
-%h1 IFRAME
+.INwrap
+  - unless @hommages.empty?
+    - @hommages.each do |hommage|
+      .INcolumn
+        %a(href='#')
+          %img{:src => hommage.urlImageReduite, :class=>"INimg-box" }/
+        %p 
+          = hommage.nom
+          (&#8224; #{hommage.dateDeces})
+        - unless hommage.commentaires.empty?
+          .INcommentaire
+            %p
+              = hommage.commentaires[0..70]
+              %a(href='#')
+                [...]
+
+
+
+                

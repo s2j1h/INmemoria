@@ -14,6 +14,8 @@ set :username, ENV['username'] || 'secret'
 set :picasa_username, ENV['picasa_username'] # in dev mode: export picasa_username=xxx
 set :picasa_password, ENV['picasa_password'] # in dev mode: export picasa_password=xxx
 set :token,'maketh1$longandh@rdtoremembeavecdesmotsenfrancaisr'
+set :xcrossD, ENV['xcrossD'] || '*'
+
 
 configure :development do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
@@ -55,6 +57,8 @@ def picasa_client
 end
 
 get '/' do
+  @hommages = Hommage.all
+  response['Access-Control-Allow-Origin'] = settings.xcrossD
   haml :index, :layout => false
 end
 
@@ -109,10 +113,20 @@ post '/admin/add' do
   mime_type = 'image/jpeg'
     
   response = client.post_file('http://picasaweb.google.com/data/feed/api/user/default/albumid/default', test_image, mime_type).to_xml
-    
   urlImagePleine = response.elements["media:group"].elements["media:content"].attributes['url']
-  urlImageTresReduite = response.elements["media:group"].elements["media:thumbnail[@width='144']"].attributes['url']
-  urlImageReduite = response.elements["media:group"].elements["media:thumbnail[@width='288']"].attributes['url']
+  
+  urlImageTresReduite,  urlImageReduite = "" , ""
+  response.elements.each("media:group/media:thumbnail") do |ele|
+    if ele.attributes['url'].include? '/s144/'
+      urlImageTresReduite = ele.attributes['url']
+    elsif ele.attributes['url'].include? '/s288/'
+      urlImageReduite =  ele.attributes['url']
+    end
+  end
+  if urlImageReduite == ""
+    urlImageReduite = urlImageTresReduite
+  end
+
   urlImageEdit = response.elements["link[@rel='edit']"].attributes['href']
   #client.delete(edit_uri)
   tmpfile.close
@@ -186,8 +200,19 @@ post '/admin/edit/:id' do
   response = client.post_file('http://picasaweb.google.com/data/feed/api/user/default/albumid/default', test_image, mime_type).to_xml
     
   urlImagePleine = response.elements["media:group"].elements["media:content"].attributes['url']
-  urlImageTresReduite = response.elements["media:group"].elements["media:thumbnail[@width='144']"].attributes['url']
-  urlImageReduite = response.elements["media:group"].elements["media:thumbnail[@width='288']"].attributes['url']
+
+  urlImageTresReduite,  urlImageReduite = "" , ""
+  response.elements.each("media:group/media:thumbnail") do |ele|
+    if ele.attributes['url'].include? '/s144/'
+      urlImageTresReduite = ele.attributes['url']
+    elsif ele.attributes['url'].include? '/s288/'
+      urlImageReduite =  ele.attributes['url']
+    end
+  end
+  if urlImageReduite == ""
+    urlImageReduite = urlImageTresReduite
+  end
+
   urlImageEdit = response.elements["link[@rel='edit']"].attributes['href']
   #client.delete(edit_uri)
   tmpfile.close
