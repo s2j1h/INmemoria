@@ -57,15 +57,32 @@ def picasa_client
 end
 
 get '/' do
-  @hommages = Hommage.all
+  redirect '/pages/0'
+end
+
+get '/pages/:offset' do
+  if params[:offset] == ""
+    @offset = 0
+  else
+    @offset =  params[:offset] 
+  end
+  @hommages = Hommage.all(:limit => 6, :offset => Integer(@offset)*6, :order => [ :id.desc ])
   response['Access-Control-Allow-Origin'] = settings.xcrossD
   haml :index, :layout => false
+end
+
+
+
+get '/view/:id' do
+  @hommage = Hommage.get(params[:id])
+  response['Access-Control-Allow-Origin'] = settings.xcrossD
+  haml :view, :layout => false
 end
 
 # Admin pages with list 
 get '/admin' do
   protected!
-  @hommages = Hommage.all
+  @hommages = Hommage.all(:order => [ :id.desc ])
   haml :admin
 end
 

@@ -1,0 +1,10 @@
+.INcolumnModal
+  %img{:src => @hommage.urlImagePleine, :class=>"INimg-box" }/
+  %p 
+    = @hommage.nom
+    (&#8224; #{@hommage.dateDeces})
+  - unless @hommage.commentaires.empty?
+    .INcommentaire
+      %p
+        = @hommage.commentaires
+

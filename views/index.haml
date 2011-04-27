@@ -2,7 +2,7 @@
   - unless @hommages.empty?
     - @hommages.each do |hommage|
       .INcolumn
-        %a(href='#')
+        %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>"INcolorbox" }
           %img{:src => hommage.urlImageReduite, :class=>"INimg-box" }/
         %p 
           = hommage.nom
@@ -11,9 +11,28 @@
           .INcommentaire
             %p
               = hommage.commentaires[0..70]
-              %a(href='#')
+              %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>"INcolorbox" }
                 [...]
 
+- if Integer(@offset) == 0
+  %a{:href=>'http://localhost:4567/pages/1'}
+    Page Suivante
+- else
+  %a{:href=>'http://localhost:4567/pages/'+(Integer(@offset)+1).to_s()}
+    Page Suivante
+  %a{:href=>'http://localhost:4567/pages/'+(Integer(@offset)-1).to_s()}
+    Page Précédente
 
-
-                
+:javascript
+  $(document).ready(function(){
+  $(".INcolorbox").colorbox(
+  {
+    initialWidth: "800px",
+    initialHeight: "600px",
+    maxWidth: "1024px",
+    maxHeight: "768px"
+  
+  }
+  
+  );});
+      
