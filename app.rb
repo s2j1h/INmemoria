@@ -15,6 +15,8 @@ set :picasa_username, ENV['picasa_username'] # in dev mode: export picasa_userna
 set :picasa_password, ENV['picasa_password'] # in dev mode: export picasa_password=xxx
 set :token,'maketh1$longandh@rdtoremembeavecdesmotsenfrancaisr'
 set :xcrossD, ENV['xcrossD'] || '*'
+set :xcrossURL, ENV['xcrossURL']  || 'http://localhost:4567'
+
 
 
 configure :development do
@@ -72,6 +74,7 @@ get '/pages/:offset' do
   else
     @end = "False"  
   end
+  @xcrossURL = settings.xcrossURL
   response['Access-Control-Allow-Origin'] = settings.xcrossD
   haml :index, :layout => false
 end
@@ -80,6 +83,7 @@ end
 
 get '/view/:id' do
   @hommage = Hommage.get(params[:id])
+  @xcrossURL = settings.xcrossURL
   response['Access-Control-Allow-Origin'] = settings.xcrossD
   haml :view, :layout => false
 end
@@ -98,8 +102,8 @@ get '/admin/pages/:offset' do
   else
     @offset =  Integer(params[:offset])
   end
-  @hommages = Hommage.all(:limit => 6, :offset => @offset*6, :order => [ :id.desc ])
-  if Hommage.count < (@offset+1)*6+1
+  @hommages = Hommage.all(:limit => 12, :offset => @offset*12, :order => [ :id.desc ])
+  if Hommage.count < (@offset+1)*12+1
     @end = "True"
   else
     @end = "False"

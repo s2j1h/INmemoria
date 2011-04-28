@@ -2,7 +2,7 @@
   - unless @hommages.empty?
     - @hommages.each do |hommage|
       .INcolumn
-        %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>'view'}
+        %a{:href=>@xcrossURL + '/view/' + hommage.id.to_s(),:class=>'view'}
           %img{:src => hommage.urlImageReduite, :class=>"INimg-box" }/
         %p 
           = hommage.nom
@@ -11,7 +11,7 @@
           .INcommentaire
             %p
               = hommage.commentaires[0..70]
-              %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>"view" }
+              %a{:href=>@xcrossURL + '/view/' + hommage.id.to_s(),:class=>"view" }
                 [...]
 
 - if Integer(@offset) == 0
@@ -43,14 +43,13 @@
     var url = jQuery(this).attr("href");
     $('#INinner').load(url);
     return false;
-  
   });
   $('#forward').click(function(){ 
-    $('#INinner').load('http://localhost:4567/pages/#{(Integer(@offset)+1).to_s()}');
+    $('#INinner').load('#{@xcrossURL}/pages/#{(Integer(@offset)+1).to_s()}');
     return false; 
   });
     $('#rewind').click(function(){ 
-    $('#INinner').load('http://localhost:4567/pages/#{(Integer(@offset)-1).to_s()}');
+    $('#INinner').load('#{@xcrossURL}/pages/#{(Integer(@offset)-1).to_s()}');
     return false; 
   });
 
