@@ -64,9 +64,14 @@ get '/pages/:offset' do
   if params[:offset] == ""
     @offset = 0
   else
-    @offset =  params[:offset] 
+    @offset =  Integer(params[:offset])
   end
-  @hommages = Hommage.all(:limit => 6, :offset => Integer(@offset)*6, :order => [ :id.desc ])
+  @hommages = Hommage.all(:limit => 6, :offset => @offset*6, :order => [ :id.desc ])
+  if Hommage.count < (@offset+1)*6+1
+    @end = "True"
+  else
+    @end = "False"  
+  end
   response['Access-Control-Allow-Origin'] = settings.xcrossD
   haml :index, :layout => false
 end
@@ -81,10 +86,28 @@ end
 
 # Admin pages with list 
 get '/admin' do
+  redirect '/admin/pages/0'
+end
+
+
+# Admin pages with list 
+get '/admin/pages/:offset' do
   protected!
-  @hommages = Hommage.all(:order => [ :id.desc ])
+   if params[:offset] == ""
+    @offset = 0
+  else
+    @offset =  Integer(params[:offset])
+  end
+  @hommages = Hommage.all(:limit => 6, :offset => @offset*6, :order => [ :id.desc ])
+  if Hommage.count < (@offset+1)*6+1
+    @end = "True"
+  else
+    @end = "False"
+  end
+
   haml :admin
 end
+
 
 #GET login page
 get '/login' do
@@ -104,8 +127,7 @@ end
 
 get '/logout' do
   response.set_cookie(settings.username, false)
-  flash[:notice] = "Vous êtes déconnecté"
-  haml :login
+  redirect '/login', :notice =>  "Vous êtes déconnecté"
 end
 
 get '/admin/add' do
@@ -130,19 +152,21 @@ post '/admin/add' do
   mime_type = 'image/jpeg'
     
   response = client.post_file('http://picasaweb.google.com/data/feed/api/user/default/albumid/default', test_image, mime_type).to_xml
-  urlImagePleine = response.elements["media:group"].elements["media:content"].attributes['url']
+  #urlImagePleine = response.elements["media:group"].elements["media:content"].attributes['url'] #par défaut sinon s640
   
   urlImageTresReduite,  urlImageReduite = "" , ""
   response.elements.each("media:group/media:thumbnail") do |ele|
-    if ele.attributes['url'].include? '/s144/'
+    puts  ele.attributes['url']
+    if ele.attributes['url'].include? '/s144/' #existe forcement
       urlImageTresReduite = ele.attributes['url']
     elsif ele.attributes['url'].include? '/s288/'
       urlImageReduite =  ele.attributes['url']
     end
   end
-  if urlImageReduite == ""
+  if urlImageReduite == "" #si s288 pas trouvé
     urlImageReduite = urlImageTresReduite
   end
+  urlImagePleine = urlImageTresReduite.gsub("/s144/", "/s640/")
 
   urlImageEdit = response.elements["link[@rel='edit']"].attributes['href']
   #client.delete(edit_uri)
@@ -224,6 +248,8 @@ post '/admin/edit/:id' do
       urlImageTresReduite = ele.attributes['url']
     elsif ele.attributes['url'].include? '/s288/'
       urlImageReduite =  ele.attributes['url']
+    elsif ele.attributes['url'].include? '/s640/'
+      urlImagePleine =  ele.attributes['url']
     end
   end
   if urlImageReduite == ""

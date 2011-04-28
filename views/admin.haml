@@ -17,3 +17,24 @@
         %p 
           %a(href='/admin/edit/#{hommage.id}')
             = hommage.nom
+
+#wrapNav
+  #nav
+    - if Integer(@offset) == 0
+      - if @end == "False"
+        .INforward
+          %a{:href=>'/admin/pages/' + (Integer(@offset)+1).to_s(),:id=>'forward',:class=>'awesome'}
+            Page Suivante
+    - else
+      - if @end == "False"
+        .INforward
+          %a{:href=>'/admin/pages/' + (Integer(@offset)+1).to_s(),:id=>'forward',:class=>'awesome'}
+            Page Suivante
+      .INrewind
+        %a{:href=>'/admin/pages/' + (Integer(@offset)-1).to_s(),:id=>'rewind',:class=>'awesome'}
+          Page Précédente
+        &nbsp; &nbsp; &nbsp; &nbsp;
+
+
+
+

@@ -119,6 +119,7 @@ strong {
 #footer {
   clear:both;
 	height: 15px;
+  margin-top: 20px;
 	padding: 0px 0 15px 0;
 	background: #532408;
 	border-top: 5px solid #aef2f7;
@@ -309,5 +310,18 @@ strong {
   .awesome:active {
     -webkit-box-shadow: none;
   }
+}
+
+
+.INforward {
+  position: relative;
+  display: inline-block;
+  float: right;
+}
+
+.INrewind {
+  position: relative;
+  display: inline-block;
+  float: left;
 }
 

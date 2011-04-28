@@ -2,7 +2,7 @@
   - unless @hommages.empty?
     - @hommages.each do |hommage|
       .INcolumn
-        %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>"INcolorbox" }
+        %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>'view'}
           %img{:src => hommage.urlImageReduite, :class=>"INimg-box" }/
         %p 
           = hommage.nom
@@ -11,28 +11,49 @@
           .INcommentaire
             %p
               = hommage.commentaires[0..70]
-              %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>"INcolorbox" }
+              %a{:href=>'http://localhost:4567/view/' + hommage.id.to_s(),:class=>"view" }
                 [...]
 
 - if Integer(@offset) == 0
-  %a{:href=>'http://localhost:4567/pages/1'}
-    Page Suivante
+  - if @end == "False"
+    .INforward
+      %a{:href=>'#',:id=>'forward'}
+        Page Suivante
 - else
-  %a{:href=>'http://localhost:4567/pages/'+(Integer(@offset)+1).to_s()}
-    Page Suivante
-  %a{:href=>'http://localhost:4567/pages/'+(Integer(@offset)-1).to_s()}
-    Page Précédente
+  - if @end == "False"
+    .INforward
+      %a{:href=>'#',:id=>'forward'}
+        Page Suivante
+  .INrewind
+    %a{:href=>'#',:id=>'rewind'}
+      Page Précédente
 
 :javascript
   $(document).ready(function(){
   $(".INcolorbox").colorbox(
   {
-    initialWidth: "800px",
-    initialHeight: "600px",
+    initialWidth: "80px",
+    initialHeight: "650px",
     maxWidth: "1024px",
-    maxHeight: "768px"
+    maxHeight: "768px",
+    scrolling: false
   
-  }
+  } );
+  $('.view').click(function(event){
+    var url = jQuery(this).attr("href");
+    $('#INinner').load(url);
+    return false;
   
-  );});
+  });
+  $('#forward').click(function(){ 
+    $('#INinner').load('http://localhost:4567/pages/#{(Integer(@offset)+1).to_s()}');
+    return false; 
+  });
+    $('#rewind').click(function(){ 
+    $('#INinner').load('http://localhost:4567/pages/#{(Integer(@offset)-1).to_s()}');
+    return false; 
+  });
+
+  
+   });
       
